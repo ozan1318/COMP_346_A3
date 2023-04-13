@@ -15,7 +15,7 @@ public class Monitor
 	state[] state_phil;
 	private int chopsticks;
 	int phil_num;
-	
+	boolean is_talking = false;
 	
 	
 
@@ -49,6 +49,18 @@ public class Monitor
 	public synchronized void pickUp(final int piTID)
 	{
 		state_phil[piTID -1] = state.HUNGRY;
+		
+		while(Test(piTID))
+		{
+			try {
+				wait();
+			} catch (InterruptedException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+		state_phil[piTID - 1] = state.EATING;
+		/*
 		if((state_phil[((piTID -1) + (phil_num - 1)) % phil_num] != state.EATING) && (state_phil[(piTID) % phil_num] != state.EATING) && state_phil[piTID - 1] == state.HUNGRY)
 		{
 			state_phil[piTID - 1] = state.EATING;
@@ -61,15 +73,16 @@ public class Monitor
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			*/
 		
 				
 	}
 
 	/**
-	 * When a given philosopher's done eating, they put the chopstiks/forks down
+	 * When a given philosopher's done eating, they put the chopsticks/forks down
 	 * and let others know they are available.
 	 */
-	public synchronized void putDown(final int piTID)
+	public synchronized void putDown(final int piTID) 
 	{
 		state_phil[piTID - 1] = state.THINKING;
 		notifyAll();
@@ -81,7 +94,16 @@ public class Monitor
 	 */
 	public synchronized void requestTalk()
 	{
-		// ...
+		if(is_talking)
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		else
+			is_talking = true;
+			
 	}
 
 	/**
@@ -90,7 +112,18 @@ public class Monitor
 	 */
 	public synchronized void endTalk()
 	{
-		// ...
+		is_talking = false;
+		notifyAll();
+	}
+	
+	public boolean Test(final int piTID)
+	{
+		if(((state_phil[((piTID -1) + (phil_num - 1)) % phil_num] == state.EATING) || (state_phil[(piTID) % phil_num] == state.EATING)) && state_phil[piTID - 1] == state.HUNGRY)
+		{
+			return true;
+		}
+		else 
+			return false;
 	}
 }
 
