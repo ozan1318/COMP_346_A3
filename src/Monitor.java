@@ -16,6 +16,7 @@ public class Monitor
 	private int chopsticks;
 	int phil_num;
 	boolean is_talking = false;
+	int[] phil_counter;
 	
 	
 
@@ -29,6 +30,7 @@ public class Monitor
 		state_phil = new state[piNumberOfPhilosophers];
 		chopsticks = piNumberOfPhilosophers;
 		phil_num = piNumberOfPhilosophers;
+		phil_counter = new int[piNumberOfPhilosophers];
 		for(int i = 0; i < piNumberOfPhilosophers; i++)
 		{
 			state_phil[i] = state.THINKING;
@@ -59,22 +61,9 @@ public class Monitor
 				e1.printStackTrace();
 			}
 		}
+		phil_counter[piTID - 1] = phil_counter[piTID - 1] + 1;
+		System.out.println("Counter of philosopher " + piTID + ": " + phil_counter[piTID -1]);
 		state_phil[piTID - 1] = state.EATING;
-		/*
-		if((state_phil[((piTID -1) + (phil_num - 1)) % phil_num] != state.EATING) && (state_phil[(piTID) % phil_num] != state.EATING) && state_phil[piTID - 1] == state.HUNGRY)
-		{
-			state_phil[piTID - 1] = state.EATING;
-		}
-		
-		if(state_phil[piTID - 1] != state.EATING)
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			*/
-		
 				
 	}
 
@@ -118,11 +107,13 @@ public class Monitor
 	
 	public boolean Test(final int piTID)
 	{
-		if(((state_phil[((piTID -1) + (phil_num - 1)) % phil_num] == state.EATING) || (state_phil[(piTID) % phil_num] == state.EATING)) && state_phil[piTID - 1] == state.HUNGRY)
+		if(((state_phil[((piTID - 1) + (phil_num - 1)) % phil_num] == state.EATING) || (state_phil[(piTID) % phil_num] == state.EATING)) && state_phil[piTID - 1] == state.HUNGRY)
 		{
 			return true;
 		}
-		else 
+		else if((phil_counter[((piTID -1) + (phil_num - 1)) % phil_num] < phil_counter[piTID - 1]) || (phil_counter[(piTID) % phil_num] < phil_counter[piTID -1]))
+			return true;
+		else
 			return false;
 	}
 }
