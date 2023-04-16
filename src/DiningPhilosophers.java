@@ -49,10 +49,11 @@ public class DiningPhilosophers
 			 * Should be settable from the command line
 			 * or the default if no arguments supplied.
 			 */
+			Scanner sc = new Scanner(System.in);
 			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
-			boolean valid = true;
+			boolean valid = true; 
 			System.out.print("java DiningPhilosophers "); // Asking the user to enter the number of philosophers.
-			String number_str = argv[0];
+			String number_str = sc.next();
 			char[] number_ar = number_str.toCharArray(); // Turning the string into a character array.
 			
 			// checking if the string is all numbers
