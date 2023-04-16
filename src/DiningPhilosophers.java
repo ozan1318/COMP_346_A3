@@ -51,10 +51,37 @@ public class DiningPhilosophers
 			 */
 			Scanner sc = new Scanner(System.in);
 			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
-			System.out.println("Enter the number of philosophers: ");
-			int number = sc.nextInt();
-			if(number > 0)
-				iPhilosophers = number;
+			boolean valid = true; 
+			System.out.print("java DiningPhilosophers "); // Asking the user to enter the number of philosophers.
+			String number_str = sc.next();
+			char[] number_ar = number_str.toCharArray(); // Turning the string into a character array.
+			
+			// checking if the string is all numbers
+			for(int i = 0; i < number_ar.length; i++)
+			{
+				if(((int) number_ar[i]) > 57 || ((int) number_ar[i]) < 48)
+				{
+					valid = false;
+					break;
+				}
+			}
+			
+			// if the string are all numbers and the number is bigger than zero.
+			if(valid && Integer.parseInt(number_str) > 0)
+			{
+				iPhilosophers = Integer.parseInt(number_str); // Number of philosophers is defined by the user
+				
+			}
+			// use default value
+			else
+			{
+				
+				System.out.println("\"" + number_str + "\"" + " is not a positive decimal integer"); // use default value if number is not valid.
+				System.out.println();
+				System.out.println();
+				System.out.println("Usage: java DininPhilosophers[" + iPhilosophers + "]");
+				System.out.println();
+			}
 			
 
 			// Make the monitor aware of how many philosophers there are
