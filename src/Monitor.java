@@ -117,7 +117,7 @@ public class Monitor
 			return true; 
 		}
 		// checking the counter of philosophers piTID - 1 and piTID + 1.
-		else if((phil_counter[((piTID -1) + (phil_num - 1)) % phil_num] < phil_counter[piTID - 1]) || (phil_counter[(piTID) % phil_num] < phil_counter[piTID -1]))
+		else if(((phil_counter[((piTID -1) + (phil_num - 1)) % phil_num] < phil_counter[piTID - 1]) && ((state_phil[((piTID - 1) + (phil_num - 1)) % phil_num]) == state.HUNGRY)) || ((phil_counter[(piTID) % phil_num] < phil_counter[piTID -1]) && ((state_phil[(piTID) % phil_num] == state.HUNGRY))))
 			return true;
 		else
 			return false;
