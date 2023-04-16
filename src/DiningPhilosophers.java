@@ -4,8 +4,6 @@
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
-
-import java.util.*;
 public class DiningPhilosophers
 {
 	/*
@@ -49,11 +47,9 @@ public class DiningPhilosophers
 			 * Should be settable from the command line
 			 * or the default if no arguments supplied.
 			 */
-			Scanner sc = new Scanner(System.in);
 			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
-			boolean valid = true; 
-			System.out.print("java DiningPhilosophers "); // Asking the user to enter the number of philosophers.
-			String number_str = sc.next();
+			boolean valid = true;
+			String number_str = argv[0];
 			char[] number_ar = number_str.toCharArray(); // Turning the string into a character array.
 			
 			// checking if the string is all numbers
@@ -88,7 +84,7 @@ public class DiningPhilosophers
 			soMonitor = new Monitor(iPhilosophers);
 
 			// Space for all the philosophers
-			Philosopher aoPhilosophers[] = new Philosopher[iPhilosophers];
+			Philosopher[] aoPhilosophers = new Philosopher[iPhilosophers];
 
 			// Let 'em sit down
 			for(int j = 0; j < iPhilosophers; j++)

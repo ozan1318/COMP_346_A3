@@ -1,5 +1,4 @@
 import common.BaseThread;
-import java.util.Random;
 /**
  * Class Philosopher.
  * Outlines main subroutines of our virtual philosopher.
