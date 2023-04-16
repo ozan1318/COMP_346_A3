@@ -11,12 +11,11 @@ public class Monitor
 	 * Data members
 	 * ------------
 	 */
-	enum state {THINKING, EATING, HUNGRY} 
-	state[] state_phil;
-	private int chopsticks;
-	int phil_num;
-	boolean is_talking = false;
-	int[] phil_counter;
+	enum state {THINKING, EATING, HUNGRY} // defining three states.
+	state[] state_phil; // array representing the state of each philospher.
+	int phil_num; // number of philosophers.
+	boolean is_talking = false; // variable that indicates if any philosphers is talking.
+	int[] phil_counter; // array that keeps track of the number of times a philosopher ate.
 	
 	
 
@@ -27,13 +26,13 @@ public class Monitor
 	public Monitor(int piNumberOfPhilosophers)
 	{
 		// TODO: set appropriate number of chopsticks based on the # of philosophers
-		state_phil = new state[piNumberOfPhilosophers];
-		chopsticks = piNumberOfPhilosophers;
+		state_phil = new state[piNumberOfPhilosophers]; // creating the state array.
+		
 		phil_num = piNumberOfPhilosophers;
-		phil_counter = new int[piNumberOfPhilosophers];
+		phil_counter = new int[piNumberOfPhilosophers]; // creating the counter array.
 		for(int i = 0; i < piNumberOfPhilosophers; i++)
 		{
-			state_phil[i] = state.THINKING;
+			state_phil[i] = state.THINKING; // initializing the state of each philosopher to "THINKING".
 		}
 		
 	}
@@ -50,9 +49,12 @@ public class Monitor
 	 */
 	public synchronized void pickUp(final int piTID)
 	{
-		state_phil[piTID -1] = state.HUNGRY;
+		state_phil[piTID -1] = state.HUNGRY; // making the state of the philosopher piTID "HUNGRY".
 		
-		while(Test(piTID))
+		// The loop constantly checks if philosopher piTID - 1 and piTID + 1 are eating. 
+		// The philosopher piTID waits as long as piTID - 1 and piTID + 1 are eating.
+		// The philosopher piTID also waits if he ate more than philosophers piTID - 1 and piTID + 1.
+		while(Test(piTID)) 
 		{
 			try {
 				wait();
@@ -61,9 +63,9 @@ public class Monitor
 				e1.printStackTrace();
 			}
 		}
-		phil_counter[piTID - 1] = phil_counter[piTID - 1] + 1;
+		phil_counter[piTID - 1] = phil_counter[piTID - 1] + 1; // increasing the counter of the philosopher piTID.
 		System.out.println("Counter of philosopher " + piTID + ": " + phil_counter[piTID -1]);
-		state_phil[piTID - 1] = state.EATING;
+		state_phil[piTID - 1] = state.EATING; // changing the state of the philosopher piTID "EATING".
 				
 	}
 
@@ -73,8 +75,8 @@ public class Monitor
 	 */
 	public synchronized void putDown(final int piTID) 
 	{
-		state_phil[piTID - 1] = state.THINKING;
-		notifyAll();
+		state_phil[piTID - 1] = state.THINKING; // changing the state of the philosopher piTID to "THINKING".
+		notifyAll(); // Notifying other philosophers that were waiting.
 	}
 
 	/**
@@ -83,15 +85,16 @@ public class Monitor
 	 */
 	public synchronized void requestTalk()
 	{
+		// checking if any philosophers is talking.
 		if(is_talking)
 			try {
-				wait();
+				wait(); // waiting if a philosopher is talking.
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		else
-			is_talking = true;
+			is_talking = true; // allowed to talk if no philosopher is talking.
 			
 	}
 
@@ -101,16 +104,19 @@ public class Monitor
 	 */
 	public synchronized void endTalk()
 	{
+		// notifying other philosophers that were waiting to talk.
 		is_talking = false;
-		notifyAll();
+		notifyAll(); 
 	}
 	
 	public boolean Test(final int piTID)
 	{
+		// checking if the philosopher piTID - 1 and piTID + 1 are eating. 
 		if(((state_phil[((piTID - 1) + (phil_num - 1)) % phil_num] == state.EATING) || (state_phil[(piTID) % phil_num] == state.EATING)) && state_phil[piTID - 1] == state.HUNGRY)
 		{
-			return true;
+			return true; 
 		}
+		// checking the counter of philosophers piTID - 1 and piTID + 1.
 		else if((phil_counter[((piTID -1) + (phil_num - 1)) % phil_num] < phil_counter[piTID - 1]) || (phil_counter[(piTID) % phil_num] < phil_counter[piTID -1]))
 			return true;
 		else
