@@ -26,9 +26,9 @@ public class Philosopher extends BaseThread
 		try
 		{
 			System.out.println("Philosopher " + iTID + " has started eating");
-			randomYield();
-			sleep((long)(Math.random() * TIME_TO_WASTE));
-			randomYield();
+			randomYield(); // Yielding 
+			sleep((long)(Math.random() * TIME_TO_WASTE)); // sleeping
+			randomYield(); // yielding
 			System.out.println("Philosopher " + iTID + " is done eating");
 		}
 		catch(InterruptedException e)
@@ -52,9 +52,9 @@ public class Philosopher extends BaseThread
 		try
 		{
 			System.out.println("Philosopher " + iTID + " has started THINKING");
-			randomYield();
-			sleep((long)(Math.random() * TIME_TO_WASTE));
-			randomYield();
+			randomYield(); // yielding
+			sleep((long)(Math.random() * TIME_TO_WASTE)); // sleeping
+			randomYield(); // yielding
 			System.out.println("Philosopher " + iTID + " is done THINKING");
 		}
 		catch(InterruptedException e)
@@ -76,10 +76,10 @@ public class Philosopher extends BaseThread
 	public void talk()
 	{
 		System.out.println("Philosopher " + iTID + " has started TALKING");
-		randomYield();
-		saySomething();
-		randomYield();
-		System.out.println("Philosopher " + iTID + " has started TALKING");
+		randomYield(); // yielding
+		saySomething(); // philosopher is talking.
+		randomYield(); // yielding
+		System.out.println("Philosopher " + iTID + " is done TALKING");
 		
 	}
 
@@ -103,12 +103,13 @@ public class Philosopher extends BaseThread
 			 * A decision is made at random whether this particular
 			 * philosopher is about to say something terribly useful.
 			 */
-			int ran = (int)(Math.random() *(100 - 0 + 1) + 0);
+			int ran = (int)(Math.random() *(100 - 0 + 1) + 0); // generating random value
+			// The philosopher can talk if the random value is smaller or equal to 50.
 			if(ran <= 50)
 			{
-				DiningPhilosophers.soMonitor.requestTalk();
-				talk();
-				DiningPhilosophers.soMonitor.endTalk();
+				DiningPhilosophers.soMonitor.requestTalk(); // requesting to talk.
+				talk(); // talking
+				DiningPhilosophers.soMonitor.endTalk(); // finishing to talk.
 			}
 
 			Thread.yield();
